@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Adds a tax rate based on the current shipping address for the order.
+ * The tax rate comes from the database table "tax_rate"
+ */
+ 
+/**
+ * Implements hook_commerce_tax_rate_info().
+ */
+function commerce_tabletax_commerce_tax_rate_info(){
+
+  $tax_info = _commerce_tabletax_load_tax_table();
+  if(!is_null($tax_info) && isset($tax_info->tax_rate)){
+    $title = (isset($tax_info->display_name) && !is_null($tax_info->display_name))?(_($tax_info->display_name)):(_('Sales Tax'));
+    $name = 'commerce_tabletax';
+    $tax_rate = array($name=>array(
+      'title'=>$title, /*This can be overriden from the databse*/
+      'rate'=>$tax_info->tax_rate,
+      'type'=>'sales_tax',
+      'rules_component' => TRUE,
+      /*'calculation_callback' => 'commerce_tabletax_commerce_tax_rate_calculate',*/
+    ));
+    return $tax_rate;
+  }
+  return array();
+}
+
+function _commerce_tabletax_load_tax_table(){
+  $zip = _commerce_tabletax_get_shipping_zip();
+  if(!is_null($zip)){
+    $query = db_select('tax_rates', 'tr');
+    $query->condition('tr.postal_code', $zip, '=')
+        ->fields('tr', array('tax_rate', 'display_name'));
+    $result = $query->execute();
+    $theResult = $result->fetchObject();
+    return $theResult;
+  }
+  return FALSE;
+}
+
+function _commerce_tabletax_get_shipping_zip(){
+  global $user;
+  
+  $order_id = commerce_cart_order_id($user->uid);
+  if(is_null($order_id)){
+    return FALSE;
+  }
+  
+  $order = commerce_order_load($order_id);
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+  $shipping_address = $order_wrapper->commerce_customer_shipping->commerce_customer_address->value();
+  if(!is_null($shipping_address) && isset($shipping_address['postal_code'])){
+    return $shipping_address['postal_code'];
+  }
+  
+  return FALSE;
+  
+}

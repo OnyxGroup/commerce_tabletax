@@ -1,0 +1,17 @@
+; $Id$
+name = Commerce Table Tax Module
+description = Applies taxes based on zip code
+package = Commerce (contrib)
+dependencies[] = commerce
+dependencies[] = commerce_shipping
+
+core = 7.x
+; Base module files
+files[] = commerce_tabletax.module
+
+; Information added by drupal.org packaging script on 2011-08-13
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "commerce_tabletax"
+datestamp = "1313168621"
+
