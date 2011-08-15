@@ -1,0 +1,24 @@
+h1. Commerce Tabletax
+
+For use in Drupal Commerce. Adds a tax rate based on the current shipping address zip code for the order. The tax rate comes from the database table "tax_rate". Requires the Commerce Shipping Module.
+
+h2. Instructions
+
+h3. Install the database
+
+You will have to manually install the database, I provide a sample schema although you really only need the fields for zip code and tax rate. I also included the sample data for the Georgia Tax rates.
+
+h3. Install the module
+
+Upload the module to your modules directory and enable it. You will also need to install the Commerce Shipping module so that we have access to the "postal code" field.
+
+h2. Props
+
+Just want to give shoutouts to all the great devs who put out code that I am using here:
+All the guys at Drupal Commerce for continually putting out great products and answering community questions.
+
+h2. Issues
+
+Please send any issues to our GitHub page "http://github.com/OnyxGroup/commerce_tabletax/issues":http://github.com/OnyxGroup/commerce_tabletax/issues
+
+Copyright 2011 Adrian Mummey, Onyx Group(c)
