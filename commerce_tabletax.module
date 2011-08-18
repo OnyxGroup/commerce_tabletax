@@ -50,7 +50,11 @@ function _commerce_tabletax_get_shipping_zip(){
   
   $order = commerce_order_load($order_id);
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-  $shipping_address = $order_wrapper->commerce_customer_shipping->commerce_customer_address->value();
+  $shipping_address = NULL;
+  if(isset($order_wrapper->commerce_customer_shipping->commerce_customer_address)){
+    $shipping_address = $order_wrapper->commerce_customer_shipping->commerce_customer_address->value();
+  }
+  
   if(!is_null($shipping_address) && isset($shipping_address['postal_code'])){
     return $shipping_address['postal_code'];
   }
