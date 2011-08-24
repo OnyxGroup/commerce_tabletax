@@ -44,7 +44,8 @@ function _commerce_tabletax_get_shipping_zip(){
   global $user;
   
   $order_id = commerce_cart_order_id($user->uid);
-  if(is_null($order_id)){
+  dsm($order_id);
+  if(empty($order_id)){
     return FALSE;
   }
   
