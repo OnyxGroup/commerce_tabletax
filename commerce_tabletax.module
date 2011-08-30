@@ -37,29 +37,23 @@ function _commerce_tabletax_load_tax_table(){
     $theResult = $result->fetchObject();
     return $theResult;
   }
+  
   return FALSE;
 }
 
 function _commerce_tabletax_get_shipping_zip(){
   global $user;
-  
-  $order_id = commerce_cart_order_id($user->uid);
-  dsm($order_id);
-  if(empty($order_id)){
-    return FALSE;
-  }
-  
-  $order = commerce_order_load($order_id);
-  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
-  $shipping_address = NULL;
-  if(isset($order_wrapper->commerce_customer_shipping->commerce_customer_address)){
-    $shipping_address = $order_wrapper->commerce_customer_shipping->commerce_customer_address->value();
-  }
-  
-  if(!is_null($shipping_address) && isset($shipping_address['postal_code'])){
-    return $shipping_address['postal_code'];
-  }
-  
+
+  if ($order = commerce_cart_order_load($user->uid)) {
+    $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+    $shipping_address = NULL;
+    if(isset($order_wrapper->commerce_customer_shipping->commerce_customer_address)){
+      $shipping_address = $order_wrapper->commerce_customer_shipping->commerce_customer_address->value();
+    }
+    if(!is_null($shipping_address) && isset($shipping_address['postal_code'])){
+      return $shipping_address['postal_code'];
+    }
+  }  
   return FALSE;
   
 }
