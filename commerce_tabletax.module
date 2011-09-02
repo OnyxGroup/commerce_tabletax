@@ -19,12 +19,17 @@ function commerce_tabletax_commerce_tax_rate_info(){
       'title'=>$title, /*This can be overriden from the databse*/
       'rate'=>$tax_info->tax_rate,
       'type'=>'sales_tax',
-      'rules_component' => TRUE,
+      'rules_component' => FALSE, /*This was giving me big problems when TRUE*/
       /*'calculation_callback' => 'commerce_tabletax_commerce_tax_rate_calculate',*/
     ));
     return $tax_rate;
   }
   return array();
+}
+
+function commerce_tabletax_commerce_tax_type_calculate_rates($tax_type, $line_item){
+  $tax_rate = commerce_tax_rate_load('commerce_tabletax');
+  commerce_tax_rate_apply($tax_rate, $line_item);
 }
 
 function _commerce_tabletax_load_tax_table(){
